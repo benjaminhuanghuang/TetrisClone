@@ -7,7 +7,7 @@ public class Board : MonoBehaviour {
 	public Transform emptySprite;
 	public int height = 30;
 	public int width = 10;
-	public int header = 8;
+	public int header = 10;
 
 	private Transform[,] grid;
 
@@ -24,6 +24,26 @@ public class Board : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		
+	}
+
+	bool IsWithinBoard(int x, int y)
+	{
+		return (x > 0 && x < width && y >=0);
+	}
+
+	// Called by game controller
+	public bool IsValidPosition(Shape shape)
+	{
+		foreach(Transform child in shape.transform) // Check child
+		{
+			Vector2 pos = Vectorf.Round(child.position);
+			if(!IsWithinBoard((int)pos.x, (int)pos.y))
+			{
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	void DrawEmptyCells()

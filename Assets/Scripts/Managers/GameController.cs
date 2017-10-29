@@ -8,6 +8,10 @@ public class GameController : MonoBehaviour {
 	private Spawner spawner;
 	private Shape activeShape;
 
+	private float dropInterval = 1f;
+	private float timeToDrop   = 0.5f;
+
+
 	// Use this for initialization
 	void Start () {
 		// gameBoard = GameObject.FindWithTag("Board").GetComponent<Board>();
@@ -25,6 +29,23 @@ public class GameController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
+		if(!gameBoard || !spawner)
+			return;
+		if(Time.time >= timeToDrop)
+		{
+			timeToDrop = Time.time + dropInterval;
+			if(activeShape)
+			{
+				activeShape.MoveDown();
+				if(!gameBoard.IsValidPosition(activeShape))
+				{
+					activeShape.MoveUp();
+					if(spawner)
+					{
+						activeShape = spawner.SpawnShape();
+					}
+				}
+			}
+		}
 	}
 }

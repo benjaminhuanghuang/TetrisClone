@@ -25,6 +25,11 @@ public class Shape : MonoBehaviour {
 		Move(new Vector3(0, -1, 0));
 	}
 
+	public void MoveUp()
+	{
+		Move(new Vector3(0, 1, 0));
+	}
+
 	public void RotateRight()
 	{
 		if(canRotate)
