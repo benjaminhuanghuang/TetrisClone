@@ -8,23 +8,26 @@ public class GameController : MonoBehaviour {
 	private Spawner spawner;
 	private Shape activeShape;
 
-	private float dropInterval = 0.5f;
+	public float dropInterval = 0.1f;
 	private float timeToDrop   = 0.5f;
 
 
 	float timeToNextKeyLeftRight;
 	[Range(0.02f, 1f)]
-	public float keyRepeatRateLeftRight = 0.15f;
+	public float keyRepeatRateLeftRight = 0.25f;
 
 	float timeToNextKeyDown;
 	[Range(0.01f, 1f)]
-	public float keyRepeatRateDown = 0.01f;
+	public float keyRepeatRateDown = 0.02f;
 
 	float timeToNextKeyRotate;
 	[Range(0.02f, 1f)]
 	public float keyRepeatRateRotate = 0.25f;
 
 	bool gameOver = false;
+
+	public GameObject gameOverPanel;
+	private SoundManager soundManager;
 
 	// Use this for initialization
 	void Start () {
@@ -36,6 +39,7 @@ public class GameController : MonoBehaviour {
 
 		gameBoard = GameObject.FindObjectOfType<Board>();
 		spawner = GameObject.FindObjectOfType<Spawner>();
+		soundManager = GameObject.FindObjectOfType<SoundManager>();
 		
 		if(spawner)
 		{
@@ -46,10 +50,14 @@ public class GameController : MonoBehaviour {
 			}
 		}
 
+		if(gameOverPanel)
+		{
+			gameOverPanel.SetActive(false);
+		}
 	}
 	void PlayerInput()
 	{
-		if(Input.GetButton("MoveRight") && (Time.time > timeToNextKeyLeftRight) || Input.GetButton("MoveRight"))
+		if(Input.GetButton("MoveRight") && (Time.time > timeToNextKeyLeftRight))
 		{
 			activeShape.MoveRight();
 			timeToNextKeyLeftRight = Time.time + keyRepeatRateLeftRight;
@@ -57,7 +65,7 @@ public class GameController : MonoBehaviour {
 			if(! gameBoard.IsValidPosition(activeShape))
 				activeShape.MoveLeft();
 		}
-		else if(Input.GetButton("MoveLeft") && (Time.time > timeToNextKeyLeftRight) || Input.GetButton("MoveLeft"))
+		else if(Input.GetButton("MoveLeft") && (Time.time > timeToNextKeyLeftRight))
 		{
 			activeShape.MoveLeft();
 			timeToNextKeyLeftRight = Time.time + keyRepeatRateLeftRight;
@@ -83,8 +91,7 @@ public class GameController : MonoBehaviour {
 			{
 				if(gameBoard.IsOverLimit(activeShape))
 				{
-					activeShape.MoveUp();
-					gameOver = true;
+					GameOver();
 				}
 				else {
 					LandShape();
@@ -106,9 +113,20 @@ public class GameController : MonoBehaviour {
 	}
 	// Update is called once per frame
 	void Update () {
-		if(!gameBoard || !spawner || !activeShape || gameOver)
+		if(!gameBoard || !spawner || !activeShape || gameOver || !soundManager)
 			return;
 		PlayerInput();
+	}
+	
+	void GameOver()
+	{
+		activeShape.MoveUp();
+		gameOver = true;
+
+		if(gameOverPanel)
+		{
+			gameOverPanel.SetActive(true);
+		}
 	}
 
 	public void Restart(){
