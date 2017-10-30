@@ -14,7 +14,7 @@ public class Board : MonoBehaviour {
 	// Called when the script instance is being loaded.
 	void Awake()
 	{
-		grid = new Transform[width, header];
+		grid = new Transform[width, height];
 	}
 	// Use this for initialization
 	void Start () {
@@ -28,7 +28,13 @@ public class Board : MonoBehaviour {
 
 	bool IsWithinBoard(int x, int y)
 	{
-		return (x > 0 && x < width && y >=0);
+		return (x >= 0 && x < width && y >=0);
+	}
+
+	bool IsOccupied(int x, int y, Shape shape)
+	{
+		// pos is is occupied by other shape
+		return (grid[x, y] != null && grid[x, y].parent != shape.transform);
 	}
 
 	// Called by game controller
@@ -38,6 +44,10 @@ public class Board : MonoBehaviour {
 		{
 			Vector2 pos = Vectorf.Round(child.position);
 			if(!IsWithinBoard((int)pos.x, (int)pos.y))
+			{
+				return false;
+			}
+			if(IsOccupied((int)pos.x, (int)pos.y, shape))
 			{
 				return false;
 			}
@@ -56,6 +66,18 @@ public class Board : MonoBehaviour {
 				clone.name = "Board Space ( x= "+ x.ToString() + " , y = " + y.ToString() + " )";
 				clone.transform.parent = transform;
 			}
+		}
+	}
+
+	// Update board status
+	public void StoreShapeInGrid(Shape shape)
+	{
+		if(shape == null)	return;
+
+		foreach(Transform child in shape.transform)
+		{
+			Vector2 pos = Vectorf.Round(child.position);
+			grid[(int)pos.x, (int)pos.y] = child;
 		}
 	}
 }
