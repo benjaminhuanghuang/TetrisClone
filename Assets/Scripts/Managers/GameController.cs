@@ -24,6 +24,8 @@ public class GameController : MonoBehaviour {
 	[Range(0.02f, 1f)]
 	public float keyRepeatRateRotate = 0.25f;
 
+	bool gameOver = false;
+
 	// Use this for initialization
 	void Start () {
 		// gameBoard = GameObject.FindWithTag("Board").GetComponent<Board>();
@@ -79,24 +81,37 @@ public class GameController : MonoBehaviour {
 			activeShape.MoveDown();
 			if(!gameBoard.IsValidPosition(activeShape))
 			{
-				LandShape();
+				if(gameBoard.IsOverLimit(activeShape))
+				{
+					activeShape.MoveUp();
+					gameOver = true;
+				}
+				else {
+					LandShape();
+				}
 			}
 		}
 	}
 	void LandShape()
 	{
-		timeToNextKeyLeftRight = Time.time;
-		timeToNextKeyRotate= Time.time;
-		timeToNextKeyDown = Time.time;
-		
 		activeShape.MoveUp();
 		gameBoard.StoreShapeInGrid(activeShape);
 		activeShape = spawner.SpawnShape();
+
+		timeToNextKeyLeftRight = Time.time;
+		timeToNextKeyRotate= Time.time;
+		timeToNextKeyDown = Time.time;
+
+		gameBoard.ClearAllRows();
 	}
 	// Update is called once per frame
 	void Update () {
-		if(!gameBoard || !spawner || !activeShape)
+		if(!gameBoard || !spawner || !activeShape || gameOver)
 			return;
 		PlayerInput();
+	}
+
+	public void Restart(){
+		
 	}
 }
