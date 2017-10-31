@@ -29,6 +29,12 @@ public class GameController : MonoBehaviour {
 	public GameObject gameOverPanel;
 	public SoundManager soundManager;
 
+	public IconToggle rotIconToggle;
+	bool clockwise = true;
+
+	public bool isPaused = false;
+	public GameObject pausePanel;
+
 	// Use this for initialization
 	void Start () {
 		// gameBoard = GameObject.FindWithTag("Board").GetComponent<Board>();
@@ -53,6 +59,11 @@ public class GameController : MonoBehaviour {
 		if(gameOverPanel)
 		{
 			gameOverPanel.SetActive(false);
+		}
+
+		if(pausePanel)
+		{
+			pausePanel.SetActive(false);
 		}
 	}
 	void PlayerInput()
@@ -88,12 +99,14 @@ public class GameController : MonoBehaviour {
 		}
 		else if(Input.GetButton("Rotate") && (Time.time > timeToNextKeyRotate))
 		{
-			activeShape.RotateRight();
+			// activeShape.RotateRight();
+			activeShape.RotateClockwise(clockwise);
 			timeToNextKeyRotate = Time.time + keyRepeatRateRotate ;
 
 			if(! gameBoard.IsValidPosition(activeShape))
 			{
-				activeShape.RotateLeft();
+				// activeShape.RotateLeft();
+				activeShape.RotateClockwise(!clockwise); 
 				PlaySound(soundManager.errorSound, 0.5f);
 			}
 			else
@@ -138,6 +151,7 @@ public class GameController : MonoBehaviour {
 			if(gameBoard.completeRows > 1)
 			{
 				PlaySound(soundManager.GetRandomClip(soundManager.vocalClips), 0.5f);	
+				gameBoard.completeRows = 0;
 			}
 			PlaySound(soundManager.clearRowSound, 0.5f);	
 		}
@@ -164,7 +178,8 @@ public class GameController : MonoBehaviour {
 	}
 
 	public void Restart(){
-		
+		Time.timeScale = 1f;
+		UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);    
 	}
 
 	private void PlaySound(AudioClip clip, float volMultiplier)
@@ -172,6 +187,34 @@ public class GameController : MonoBehaviour {
 		if(clip && soundManager.fxEnabled)
 		{
 			AudioSource.PlayClipAtPoint(clip, Camera.main.transform.position, Mathf.Clamp(soundManager.fxVolume * volMultiplier, 0.05f, 1f));
+		}
+	}
+
+	public void ToggleRoteDirection()
+	{
+		clockwise = !clockwise;
+		if(rotIconToggle)
+		{
+			rotIconToggle.ToggleIcon(clockwise);
+		}
+	}
+
+	public void TogglePause()
+	{
+		if(gameOver)
+		{
+			return;
+		}
+
+		isPaused = !isPaused;
+		if(pausePanel)
+		{
+			pausePanel.SetActive(isPaused);
+			if(soundManager)
+			{
+				soundManager.musicSource.volume = (isPaused) ? soundManager.musicVolume * 0.25f: soundManager.musicVolume;
+			}
+			Time.timeScale = isPaused ? 0 : 1;
 		}
 	}
 }

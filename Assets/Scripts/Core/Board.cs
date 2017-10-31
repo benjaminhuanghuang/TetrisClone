@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -20,7 +20,7 @@ public class Board : MonoBehaviour {
 	}
 	// Use this for initialization
 	void Start () {
-		DrawEmptyCells();
+		// DrawEmptyCells();
 	}
 	
 	// Update is called once per frame

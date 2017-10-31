@@ -46,6 +46,18 @@ public class Shape : MonoBehaviour {
 		}
 	}
 
+	public void RotateClockwise(bool clockwise)
+	{
+		if(clockwise)
+		{
+			RotateRight();
+		}
+		else
+		{
+			RotateLeft();
+		}
+	}
+
 	// Use this for initialization
 	void Start () {
 		//InvokeRepeating("MoveDown", 0, 0.5f);
