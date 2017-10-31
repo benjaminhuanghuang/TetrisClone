@@ -27,7 +27,7 @@ public class GameController : MonoBehaviour {
 	bool gameOver = false;
 
 	public GameObject gameOverPanel;
-	private SoundManager soundManager;
+	public SoundManager soundManager;
 
 	// Use this for initialization
 	void Start () {
@@ -63,7 +63,14 @@ public class GameController : MonoBehaviour {
 			timeToNextKeyLeftRight = Time.time + keyRepeatRateLeftRight;
 
 			if(! gameBoard.IsValidPosition(activeShape))
+			{
 				activeShape.MoveLeft();
+				PlaySound(soundManager.errorSound, 0.5f);
+			}
+			else
+			{
+				PlaySound(soundManager.moveSound, 0.5f);
+			}
 		}
 		else if(Input.GetButton("MoveLeft") && (Time.time > timeToNextKeyLeftRight))
 		{
@@ -71,7 +78,13 @@ public class GameController : MonoBehaviour {
 			timeToNextKeyLeftRight = Time.time + keyRepeatRateLeftRight;
 
 			if(! gameBoard.IsValidPosition(activeShape))
+			{	
 				activeShape.MoveRight();
+				PlaySound(soundManager.errorSound, 0.5f);
+			}
+			else{
+				PlaySound(soundManager.moveSound, 0.5f);
+			}
 		}
 		else if(Input.GetButton("Rotate") && (Time.time > timeToNextKeyRotate))
 		{
@@ -79,7 +92,14 @@ public class GameController : MonoBehaviour {
 			timeToNextKeyRotate = Time.time + keyRepeatRateRotate ;
 
 			if(! gameBoard.IsValidPosition(activeShape))
+			{
 				activeShape.RotateLeft();
+				PlaySound(soundManager.errorSound, 0.5f);
+			}
+			else
+			{
+				PlaySound(soundManager.moveSound, 0.5f);	
+			}
 		}
 		else if(Input.GetButton("MoveDown") && (Time.time > timeToNextKeyDown) || (Time.time > timeToDrop))
 		{
@@ -103,6 +123,8 @@ public class GameController : MonoBehaviour {
 	{
 		activeShape.MoveUp();
 		gameBoard.StoreShapeInGrid(activeShape);
+		PlaySound(soundManager.dropSound, 0.75f);
+
 		activeShape = spawner.SpawnShape();
 
 		timeToNextKeyLeftRight = Time.time;
@@ -110,6 +132,15 @@ public class GameController : MonoBehaviour {
 		timeToNextKeyDown = Time.time;
 
 		gameBoard.ClearAllRows();
+		PlaySound(soundManager.dropSound, 0.5f);
+		if(gameBoard.completeRows > 0)
+		{
+			if(gameBoard.completeRows > 1)
+			{
+				PlaySound(soundManager.GetRandomClip(soundManager.vocalClips), 0.5f);	
+			}
+			PlaySound(soundManager.clearRowSound, 0.5f);	
+		}
 	}
 	// Update is called once per frame
 	void Update () {
@@ -121,15 +152,26 @@ public class GameController : MonoBehaviour {
 	void GameOver()
 	{
 		activeShape.MoveUp();
-		gameOver = true;
-
+		
 		if(gameOverPanel)
 		{
 			gameOverPanel.SetActive(true);
 		}
+		PlaySound(soundManager.gameOverSound, 2f);
+
+		gameOver = true;
+
 	}
 
 	public void Restart(){
 		
+	}
+
+	private void PlaySound(AudioClip clip, float volMultiplier)
+	{
+		if(clip && soundManager.fxEnabled)
+		{
+			AudioSource.PlayClipAtPoint(clip, Camera.main.transform.position, Mathf.Clamp(soundManager.fxVolume * volMultiplier, 0.05f, 1f));
+		}
 	}
 }

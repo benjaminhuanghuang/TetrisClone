@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SoundManager : MonoBehaviour 
 {
-	public bool musicEnabled = true;
+	public bool musicEnabled = false;
 	[Range(0, 1)]
 	public float musicVolume = 1.0f;
 
@@ -16,13 +16,15 @@ public class SoundManager : MonoBehaviour
 	public AudioClip moveSound;
 	public AudioClip dropSound;
 	public AudioClip gameOverSound;
-	
+	public AudioClip errorSound;
 	
 	// background music clips
 	public AudioClip[] musicClips;
 	private AudioClip randomMusicClip;
 	// Play background music
 	public AudioSource musicSource;
+
+	public AudioClip[] vocalClips;
 	
 	// Use this for initialization
 	void Start () {
@@ -73,5 +75,10 @@ public class SoundManager : MonoBehaviour
 	{
 		musicEnabled = !musicEnabled;
 		UpdateMusic();
+	}
+
+	public void ToggleFX()
+	{
+		fxEnabled = !fxEnabled;
 	}
 }

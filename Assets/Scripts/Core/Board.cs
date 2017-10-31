@@ -11,6 +11,8 @@ public class Board : MonoBehaviour {
 
 	private Transform[,] grid;
 
+	public int completeRows = 0;
+
 	// Called when the script instance is being loaded.
 	void Awake()
 	{
@@ -129,6 +131,7 @@ public class Board : MonoBehaviour {
 		{
 			if(IsComplete(y))
 			{
+				completeRows++;
 				CleanRow(y);
 				ShiftRowsDown(y + 1);
 				y --;

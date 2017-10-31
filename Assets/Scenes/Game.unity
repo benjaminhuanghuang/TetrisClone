@@ -112,6 +112,48 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &2502235
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 2502237}
+  - component: {fileID: 2502236}
+  m_Layer: 0
+  m_Name: SpawnerForTesting
+  m_TagString: Spawner
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2502236
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2502235}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 242dc0df21cb344828b5b65608d8d31a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  allShapes:
+  - {fileID: 114409307875586588, guid: ecb03e933fedc4c42987824751ca21dd, type: 2}
+--- !u!4 &2502237
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2502235}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 4, y: 25, z: -1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8641833
 GameObject:
   m_ObjectHideFlags: 0
@@ -256,19 +298,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 157be9d8955f24740a9d9f45ab3da04f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  musicEnabled: 1
-  musicVolume: 1
+  musicEnabled: 0
+  musicVolume: 0.5
   fxEnabled: 1
-  fxVolume: 1
+  fxVolume: 0.5
   clearRowSound: {fileID: 8300000, guid: 5e573cc7e2cd44522a9dbd65bd61eb95, type: 3}
   moveSound: {fileID: 8300000, guid: 232745a37421848f0b6ba281e2775fd1, type: 3}
   dropSound: {fileID: 8300000, guid: 2912ce0f9e2544ed7947ea6ba42a1347, type: 3}
   gameOverSound: {fileID: 8300000, guid: fed0a0232ce1b40a882a18aa3a249a22, type: 3}
+  errorSound: {fileID: 8300000, guid: 837dfc9d854464e42ac6063e526eacc1, type: 3}
   musicClips:
   - {fileID: 8300000, guid: 8e6afcfcba29249349c399c7826ebf58, type: 3}
   - {fileID: 8300000, guid: 771c70196026e41e3abd6f9f46b17225, type: 3}
   - {fileID: 8300000, guid: e227747a923da450c93c73bcd1a0965c, type: 3}
   musicSource: {fileID: 1011801893}
+  vocalClips:
+  - {fileID: 8300000, guid: 3ceac021a4ee34f8795b93fed21c2fc0, type: 3}
+  - {fileID: 8300000, guid: ec3bd0966878d4089ad1fcc798bc3358, type: 3}
+  - {fileID: 8300000, guid: e753dc3dea92f4b1c81255878103653f, type: 3}
+  - {fileID: 8300000, guid: 8b9eee15a25ac4457bc8de1db8deed46, type: 3}
 --- !u!1 &58263289
 GameObject:
   m_ObjectHideFlags: 0
@@ -381,6 +429,7 @@ MonoBehaviour:
   height: 30
   width: 10
   header: 8
+  completeRows: 0
 --- !u!4 &155985039
 Transform:
   m_ObjectHideFlags: 0
@@ -1155,6 +1204,7 @@ MonoBehaviour:
   keyRepeatRateDown: 0.02
   keyRepeatRateRotate: 0.2
   gameOverPanel: {fileID: 1243577405}
+  soundManager: {fileID: 38306727}
 --- !u!4 &929991346
 Transform:
   m_ObjectHideFlags: 0
@@ -2400,7 +2450,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 0}
+  m_TargetGraphic: {fileID: 1935173969}
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
@@ -2580,6 +2630,12 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &1601931068 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114990963303108374, guid: e4bd95ddc59e1417387e4f025e988a00,
+    type: 2}
+  m_PrefabInternal: {fileID: 1500911656}
+  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
 --- !u!1 &1898396270
 GameObject:
   m_ObjectHideFlags: 0
@@ -2744,6 +2800,12 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1922796553}
+--- !u!114 &1935173969 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114990963303108374, guid: e4bd95ddc59e1417387e4f025e988a00,
+    type: 2}
+  m_PrefabInternal: {fileID: 1034422971}
+  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
 --- !u!1 &1940857953
 GameObject:
   m_ObjectHideFlags: 0
@@ -3062,3 +3124,60 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2072483964}
+--- !u!1 &2121050437 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1047980826642846, guid: e4bd95ddc59e1417387e4f025e988a00,
+    type: 2}
+  m_PrefabInternal: {fileID: 1500911656}
+--- !u!114 &2121050438
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2121050437}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1392445389, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 3
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 1601931068}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 38306727}
+        m_MethodName: ToggleFX
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
+      Culture=neutral, PublicKeyToken=null
