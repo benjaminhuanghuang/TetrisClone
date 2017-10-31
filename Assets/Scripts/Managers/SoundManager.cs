@@ -25,6 +25,10 @@ public class SoundManager : MonoBehaviour
 	public AudioSource musicSource;
 
 	public AudioClip[] vocalClips;
+
+	public IconToggle musicIconToggle;
+	public IconToggle fxIconToggle;
+
 	
 	// Use this for initialization
 	void Start () {
@@ -75,10 +79,19 @@ public class SoundManager : MonoBehaviour
 	{
 		musicEnabled = !musicEnabled;
 		UpdateMusic();
+
+		if(musicIconToggle)
+		{
+			musicIconToggle.ToggleIcon(musicEnabled);
+		}
 	}
 
 	public void ToggleFX()
 	{
 		fxEnabled = !fxEnabled;
+		if(fxIconToggle)
+		{
+			fxIconToggle.ToggleIcon(fxEnabled);
+		}
 	}
 }
